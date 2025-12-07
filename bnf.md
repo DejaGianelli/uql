@@ -9,22 +9,22 @@
 
 <filters> ::= <filter>
             | <filter> <logical_operator> <filters>
+            | "(" <filter> <logical_operator> <filters> ")"
 
 <logical_operator> ::= && | || (double pipe)
 
-<filter> ::= <key> ":=" <comparison_expr>
-           | "(" <key> ":=" <comparison_expr> ")"
+<filter> ::= <key> <comparison_expr>
 
 <key> ::= { <key_char> }+  ;One or more
 
 <key_char> ::= "A–Z" | "a–z" | "-" | "." | "_"
 
-<comparison_expr> :: = <comparison_operator> ":" <operand>
+<comparison_expr> :: = <comparison_operator> <operand>
 					 | <comparison_operator_in> <operand_in>
 
 <comparison_operator> ::= "eq:" | "gt:" | "lt:" | "gte:" | "lte:" | "not:"
 
-<comparison_operator_in> ::= "IN"
+<comparison_operator_in> ::= "IN:"
 
 <operand> ::= """ any string """ | any number ;Literal
 

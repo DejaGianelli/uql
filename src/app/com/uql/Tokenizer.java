@@ -3,7 +3,6 @@ package com.uql;
 import java.util.Arrays;
 import java.util.Stack;
 
-import static com.uql.TokenType.ASSIGN_OPERATOR;
 import static com.uql.TokenType.COMPARISON_OPERATOR;
 import static com.uql.TokenType.IDENTIFIER;
 import static com.uql.TokenType.LITERAL;
@@ -29,16 +28,14 @@ public class Tokenizer {
      * This method starts from the current char and tries to match a token. In case of fail, it calls itself recursively
      * attempting for the next token type and so on. If no token is match, it checks for the presence of invalid
      * character and throw an error.
-     * */
+     *
+     */
     public void tokenize() {
         if (isEndOfStream()) {
             return;
         }
         skipIgnorableChars();
-        if (tokenizeAssignOp(currentChar())) {
-            tokenize();
-            return;
-        }
+
         if (tokenizeLogicalOperator(currentChar())) {
             tokenize();
             return;
@@ -198,17 +195,6 @@ public class Tokenizer {
         if (c == 0x29) { // Closing Parenthesis
             tokens.add(new Token(getCursorValue(), SEPARATOR));
             advanceRCur();
-            mvLCursorToR();
-            return true;
-        }
-        return false;
-    }
-
-    private boolean tokenizeAssignOp(char c) {
-        char[] opChars = new char[]{c, chars[rCursor + 1]};
-        if (opChars[0] == 0x3a && opChars[1] == 0x3d) { // :=
-            tokens.add(new Token(valueOf(opChars), ASSIGN_OPERATOR));
-            advanceRCur(2);
             mvLCursorToR();
             return true;
         }
